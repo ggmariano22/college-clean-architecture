@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    image: college:latest
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: go-college
+    ports:
+      - 8995:80
+    volumes:
+      - ./:/src
+    networks:
+      - college
+
+networks:
+  college:
+    name: college
