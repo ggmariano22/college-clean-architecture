@@ -5,10 +5,10 @@ services:
     image: college:latest
     build:
       context: ./
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/dev/Dockerfile
     container_name: go-college
     ports:
-      - 8995:80
+      - 8995:8995
     volumes:
       - ./:/src
     networks:
