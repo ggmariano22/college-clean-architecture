@@ -53,4 +53,5 @@ In progress :construction_worker:
     - Include CPF validation
     - Include additional activities
 - Project infrastructure
-    - Add Air for live reload when make some changes in the code
+    - Add Air for live reload when make some changes in the code :heavy_check_mark:
+    - Split Dockerfile into dev and prod :heavy_check_mark:

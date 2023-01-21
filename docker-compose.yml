@@ -10,7 +10,7 @@ services:
     ports:
       - 8995:8995
     volumes:
-      - ./:/src
+      - ./:/go/src
     networks:
       - college
 
