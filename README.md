@@ -8,24 +8,30 @@
 ---
 
 ### Project structure
-
-📦 project
- ┣ 📂 app
- ┃ ┣ 📂 domain
- ┃ ┃ ┣ 📂 entities
- ┃ ┃ ┗ 📂 useCases
- ┃ ┣ 📂 infrastructure
- ┃ ┣ 📂 interfaces
- ┃ ┗ 📂 vendor
- ┣ 📂 cmd
- ┃ ┗ 📜 main.go
- ┣ 📂 config
+📦 project <br/>
+ ┣ 📂 app <br/>
+ ┃ ┣ 📂 domain <br/>
+ ┃ ┃ ┣ 📂 entities <br/>
+ ┃ ┃ ┣ 📂 repositories <br/>
+ ┃ ┃ ┗ 📂 useCases <br/>
+ ┃ ┣ 📂 handlers <br/>
+ ┃ ┣ 📂 infrastructure <br/>
+ ┃ ┣ 📂 interfaces <br/>
+ ┃ ┗ 📂 vendor <br/>
+ ┣ 📂 cmd <br/>
+ ┃ ┗ 📜 main.go <br/>
+ ┣ 📂 config <br/>
+ ┣ 📂 docker <br/>
+ ┃ ┣ 📂 dev <br/>
+ ┃ ┣ 📂 prod <br/>
 
 ---
  ### How to run
 
 If it's the first time you are running this project, run the command `make docker-install`.
 Otherwise, just run `make docker-up`.
+
+**obs: this project now use [Air](https://github.com/cosmtrek/air) for live reload, once you build the project all code changes will be automatically built for you**
 
 ---
 
