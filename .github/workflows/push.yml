@@ -19,9 +19,6 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v3
 
-      - name: Build bin
-        run: 
-
       - name: Copy files with SSH
         uses: easingthemes/ssh-deploy@main
         env:
