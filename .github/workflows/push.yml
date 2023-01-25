@@ -6,6 +6,24 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened ]
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run:
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      
+      - name: Docker push
+        env:
+          REPO: golang-college-ec2
+        run: |
+          docker build -t $REPO .
+          docker tag $REPO:latest ${{ secrets.DOCKER_USER }}/$REPO:latest
+          docker push ${{ secrets.DOCKER_USER }}/$REPO:latest
+
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -15,12 +33,17 @@ jobs:
       - name: Copy files with SSH
         uses: easingthemes/ssh-deploy@main
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i"
-          SOURCE: "./"
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}          
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: /home/ec2-user
-          EXCLUDE: "/.github/"
-    
-  
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          REPO: golang-college-ec2
+          CONTAINER_NAME: golang-college
+        script: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          docker pull $DOCKER_USER/$REPO
+          docker stop $CONTAINER_NAME
+          docker rm $CONTAINER_NAME
+          docker run -d --name $CONTAINER_NAME -p 8995:8995 $DOCKER_USER/$REPO
