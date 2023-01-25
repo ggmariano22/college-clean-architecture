@@ -39,5 +39,14 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}          
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: /home/ec2-user
-          SOURCE: "./"
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          REPO: golang-college-ec2
+          CONTAINER_NAME: go-college
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          docker pull $DOCKER_USER/$REPO
+          docker stop $CONTAINER_NAME
+          docker rm $CONTAINER_NAME
+          docker run -d --name $CONTAINER_NAME -p 8995:8995 $DOCKER_USER/$REPO
+ 
