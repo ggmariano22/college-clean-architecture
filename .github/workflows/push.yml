@@ -49,9 +49,9 @@ jobs:
           envs: GITHUB_SHA,CONTAINER_NAME,PORT,DOCKER_USER,DOCKER_IMAGE,DOCKER_PASSWORD
           
           script: |
-            docker login -u $DOCKER_USER -p DOCKER_PASSWORD
-            docker pull DOCKER_USER/DOCKER_IMAGE
-            docker stop CONTAINER_NAME
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker pull $DOCKER_USER/$DOCKER_IMAGE
+            docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
             docker run -d --name CONTAINER_NAME -p $PORT $DOCKER_USER/$DOCKER_IMAGE
  
