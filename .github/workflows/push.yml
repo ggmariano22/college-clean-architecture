@@ -36,15 +36,22 @@ jobs:
 
       - name: Copy files with SSH
         uses: appleboy/ssh-action@master
+        env:
+          CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+          PORT: ${{ secrets.PORT }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE }}
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          envs: GITHUB_SHA,CONTAINER_NAME,PORT,DOCKER_USER,DOCKER_IMAGE,DOCKER_PASSWORD
+          
           script: |
-            docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker pull ${{ secrets.DOCKER_USER }}/golang-college-ec2
-            docker stop go-college
-            docker rm go-college
-            docker run -d --name go-college -p 8995:8995 ${{ secrets.DOCKER_USER }}/golang-college-ec2
+            docker login -u $DOCKER_USER -p DOCKER_PASSWORD
+            docker pull DOCKER_USER/DOCKER_IMAGE
+            docker stop CONTAINER_NAME
+            docker rm $CONTAINER_NAME
+            docker run -d --name CONTAINER_NAME -p $PORT $DOCKER_USER/$DOCKER_IMAGE
  
