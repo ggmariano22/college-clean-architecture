@@ -29,24 +29,21 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout files
         uses: actions/checkout@v3
 
       - name: Copy files with SSH
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}          
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          REPO: golang-college-ec2
-          CONTAINER_NAME: go-college
-          SCRIPT_AFTER: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker pull $DOCKER_USER/$REPO
-            docker stop $CONTAINER_NAME
-            docker rm $CONTAINER_NAME
-            docker run -d --name $CONTAINER_NAME -p 8995:8995 $DOCKER_USER/$REPO
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          envs: GITHUB_SHA
+        run: |
+          docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker pull ${{ secrets.DOCKER_USER }}/golang-college-ec2
+          docker stop go-college
+          docker rm go-college
+          docker run -d --name go-college -p 8995:8995 ${{ secrets.DOCKER_USER }}/golang-college-ec2
  
