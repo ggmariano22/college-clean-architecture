@@ -46,11 +46,11 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_SHA,DOCKER_USER,DOCKER_PASSWORD,DOCKER_IMAGE,CONTAINER_NAME,CONTAINER_NAME
+          envs: GITHUB_SHA,DOCKER_USER,DOCKER_PASSWORD,DOCKER_IMAGE,CONTAINER_NAME,CONTAINER_NAME,PORT
           script: |
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
             docker pull $DOCKER_USER/$DOCKER_IMAGE
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -d --name $CONTAINER_NAME -p $DOCKER_PORT $DOCKER_USER/$DOCKER_IMAGE
+            docker run -d --name $CONTAINER_NAME -p $PORT $DOCKER_USER/$DOCKER_IMAGE
  
