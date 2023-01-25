@@ -53,5 +53,5 @@ jobs:
             docker pull $DOCKER_USER/$DOCKER_IMAGE
             docker stop $CONTAINER_NAME
             docker rm $CONTAINER_NAME
-            docker run -d --name CONTAINER_NAME -p $PORT $DOCKER_USER/$DOCKER_IMAGE
+            docker run -d --name $CONTAINER_NAME -p $PORT $DOCKER_USER/$DOCKER_IMAGE
  
