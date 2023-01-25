@@ -43,10 +43,10 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           REPO: golang-college-ec2
           CONTAINER_NAME: go-college
-        run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-          docker pull $DOCKER_USER/$REPO
-          docker stop $CONTAINER_NAME
-          docker rm $CONTAINER_NAME
-          docker run -d --name $CONTAINER_NAME -p 8995:8995 $DOCKER_USER/$REPO
+          SCRIPT_AFTER: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker pull $DOCKER_USER/$REPO
+            docker stop $CONTAINER_NAME
+            docker rm $CONTAINER_NAME
+            docker run -d --name $CONTAINER_NAME -p 8995:8995 $DOCKER_USER/$REPO
  
