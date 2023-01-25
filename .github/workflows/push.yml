@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: test
     steps:
       - name: Checkout files
         uses: actions/checkout@v3
@@ -16,9 +15,9 @@ jobs:
       - name: Copy files with SSH
         uses: easingthemes/ssh-deploy@main
         env:
-          SSH_PRIVATE_KEY: {{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: {{ secrets.EC2_HOST }}
-          REMOTE_USER: {{ secrets.EC2_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_USER }}
           SOURCE: "./"
           TARGET: "/home/ec2-user"
     
