@@ -9,8 +9,26 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Run unit tests
+        uses: actions/checkout@v3
         run: go test ./...
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v3
 
+      - name: Build bin
+        run: 
+
+      - name: Copy files with SSH
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: {{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: {{ secrets.EC2_HOST }}
+          REMOTE_USER: {{ secrets.EC2_USER }}
+          SOURCE: "./"
+          TARGET: "/home/ec2-user"
+    
   
