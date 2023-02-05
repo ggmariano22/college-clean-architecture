@@ -4,16 +4,16 @@ import "college/app/domain/entities"
 
 var Students []*entities.Student
 
-type StudentRepository interface {
+type IStudentRepository interface {
 	AddStudent(student *entities.Student)
 	GetStudents() []*entities.Student
 }
 
 type StudentUseCase struct {
-	studentRepository StudentRepository
+	studentRepository IStudentRepository
 }
 
-func NewStudentUseCase(repository StudentRepository) *StudentUseCase {
+func NewStudentUseCase(repository IStudentRepository) *StudentUseCase {
 	return &StudentUseCase{
 		studentRepository: repository,
 	}
