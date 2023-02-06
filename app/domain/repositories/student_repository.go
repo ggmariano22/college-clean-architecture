@@ -31,5 +31,5 @@ func (sr *StudentRepository) GetStudentByCPF(cpf int) (*entities.Student, error)
 		}
 	}
 
-	return nil, errors.New(fmt.Sprintf("Student with CPF %d not found", cpf))
+	return nil, errors.New(fmt.Sprintf("Aluno com CPF %d não encontrado.", cpf))
 }

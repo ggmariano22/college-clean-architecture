@@ -52,8 +52,9 @@ func (h *StudentHandler) GetStudentByCPF(c *gin.Context) {
 	cpf, err := strconv.Atoi(c.Param("cpf"))
 
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		c.JSON(422, gin.H{
+			"data": fmt.Sprint("Valor para parâmetro CPF inválido."),
+		})
 	}
 
 	student, err := h.useCase.GetStudentByCPF(cpf)
@@ -67,7 +68,7 @@ func (h *StudentHandler) GetStudentByCPF(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, gin.H{
+	c.JSON(200, gin.H{
 		"data": student,
 	})
 }

@@ -64,7 +64,7 @@ func TestGetStudentByCPF(t *testing.T) {
 func TestGetStudentByCPFWithError(t *testing.T) {
 	mockRepo := new(StudentRepositoryMock)
 
-	mockRepo.On("GetStudentByCPF", 123456).Return(&entities.Student{}, errors.New("Student with CPF 123456 not found."))
+	mockRepo.On("GetStudentByCPF", 123456).Return(&entities.Student{}, errors.New("Aluno com CPF 123456 não encontrado.."))
 
 	mockRepo.GetStudentByCPF(123456)
 
