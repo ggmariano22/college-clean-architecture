@@ -3,7 +3,7 @@
 ############################
 FROM golang:alpine AS build
 
-RUN apk update && apk add --no-cache git
+RUN apk update && apk add --no-cache git bash
 
 WORKDIR $GOPATH/src
 

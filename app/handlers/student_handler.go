@@ -1,17 +1,19 @@
 package handlers
 
 import (
-	"college/app/domain/entities"
+	"college/app/handlers/dtos"
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 type StudentUseCase interface {
-	AddStudent(student *entities.Student)
-	GetStudents() []*entities.Student
+	AddStudent(student *dtos.StudentInput)
+	GetStudents() []*dtos.StudentOutput
+	GetStudentByCPF(cpf int) (*dtos.StudentOutput, error)
 }
 
 type StudentHandler struct {
@@ -25,7 +27,7 @@ func NewStudentHandler(useCase StudentUseCase) *StudentHandler {
 }
 
 func (h *StudentHandler) AddStudentHandler(c *gin.Context) {
-	student := &entities.Student{}
+	student := &dtos.StudentInput{}
 
 	if err := json.NewDecoder(c.Request.Body).Decode(student); err != nil {
 		fmt.Println("Houve um erro ao processar o body da request: ", err)
@@ -40,7 +42,32 @@ func (h *StudentHandler) AddStudentHandler(c *gin.Context) {
 }
 
 func (h *StudentHandler) GetStudentsHandler(c *gin.Context) {
+	fmt.Println(h.useCase.GetStudents())
 	c.JSON(200, gin.H{
 		"data": h.useCase.GetStudents(),
+	})
+}
+
+func (h *StudentHandler) GetStudentByCPF(c *gin.Context) {
+	cpf, err := strconv.Atoi(c.Param("cpf"))
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	student, err := h.useCase.GetStudentByCPF(cpf)
+
+	if err != nil {
+
+		c.JSON(404, gin.H{
+			"data": fmt.Sprint(err),
+		})
+
+		return
+	}
+
+	c.JSON(201, gin.H{
+		"data": student,
 	})
 }

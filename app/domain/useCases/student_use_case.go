@@ -1,12 +1,14 @@
 package useCases
 
-import "college/app/domain/entities"
-
-var Students []*entities.Student
+import (
+	"college/app/domain/entities"
+	"college/app/handlers/dtos"
+)
 
 type IStudentRepository interface {
-	AddStudent(student *entities.Student)
+	AddStudent(student *dtos.StudentInput)
 	GetStudents() []*entities.Student
+	GetStudentByCPF(cpf int) (*entities.Student, error)
 }
 
 type StudentUseCase struct {
@@ -19,10 +21,34 @@ func NewStudentUseCase(repository IStudentRepository) *StudentUseCase {
 	}
 }
 
-func (uc *StudentUseCase) AddStudent(student *entities.Student) {
+func (uc *StudentUseCase) AddStudent(student *dtos.StudentInput) {
 	uc.studentRepository.AddStudent(student)
 }
 
-func (uc *StudentUseCase) GetStudents() []*entities.Student {
-	return uc.studentRepository.GetStudents()
+func (uc *StudentUseCase) GetStudents() []*dtos.StudentOutput {
+	output := []*dtos.StudentOutput{}
+
+	students := uc.studentRepository.GetStudents()
+
+	for _, student := range students {
+		output = append(output, &dtos.StudentOutput{
+			Name:  student.GetPerson().GetName(),
+			Email: student.GetPerson().GetEmail(),
+		})
+	}
+
+	return output
+}
+
+func (uc *StudentUseCase) GetStudentByCPF(cpf int) (*dtos.StudentOutput, error) {
+	student, err := uc.studentRepository.GetStudentByCPF(cpf)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &dtos.StudentOutput{
+		Name:  student.GetPerson().GetName(),
+		Email: student.GetPerson().GetEmail(),
+	}, nil
 }

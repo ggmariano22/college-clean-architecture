@@ -17,6 +17,7 @@ func main() {
 
 	r.POST("/student", studentHandler.AddStudentHandler)
 	r.GET("/students", studentHandler.GetStudentsHandler)
+	r.GET("/student/:cpf", studentHandler.GetStudentByCPF)
 
 	r.Run(":8995")
 }
