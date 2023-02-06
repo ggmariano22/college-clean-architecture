@@ -1,20 +1,29 @@
 package entities
 
 import (
+	"college/app/domain/valueObjects"
+	"college/app/handlers/dtos"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateStudent(t *testing.T) {
-	want := &Student{
-		Name:        "Guilherme",
-		Email:       "guilherme@email.com",
-		CPF:         12345678910,
-		PhoneNumber: "15123457891",
+	input := &dtos.StudentInput{
+		CommonPersonInput: dtos.CommonPersonInput{
+			Name:  "Guilherme",
+			Email: "guilherme@email.com",
+			CPF:   12345678910,
+		},
+		PhoneNumber: "12345-6789",
 	}
 
-	got := NewStudent("Guilherme", "guilherme@email.com", 12345678910, "15123457891")
+	want := &Student{
+		person:      valueObjects.NewPerson(input.Name, input.Email, input.CPF),
+		phoneNumber: input.PhoneNumber,
+	}
+
+	got := NewStudent(input)
 
 	assert.Equal(t, want, got)
 }

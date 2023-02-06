@@ -1,33 +1,26 @@
 package entities
 
+import (
+	"college/app/domain/valueObjects"
+	"college/app/handlers/dtos"
+)
+
 type Student struct {
-	Name        string `json:"name"`
-	Email       string `json:"email"`
-	CPF         int    `json:"cpf"`
-	PhoneNumber string `json:"phone_number"`
+	person      *valueObjects.Person
+	phoneNumber string
 }
 
-func NewStudent(name, email string, cpf int, phoneNumber string) *Student {
+func NewStudent(input *dtos.StudentInput) *Student {
 	return &Student{
-		Name:        name,
-		Email:       email,
-		CPF:         cpf,
-		PhoneNumber: phoneNumber,
+		person:      valueObjects.NewPerson(input.Name, input.Email, input.CPF),
+		phoneNumber: input.PhoneNumber,
 	}
 }
 
-func (s *Student) GetName() string {
-	return s.Name
-}
-
-func (s *Student) GetEmail() string {
-	return s.Email
-}
-
-func (s *Student) GetCpf() int {
-	return s.CPF
+func (s *Student) GetPerson() *valueObjects.Person {
+	return s.person
 }
 
 func (s *Student) GetPhoneNumber() string {
-	return s.Name
+	return s.phoneNumber
 }
